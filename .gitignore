@@ -5,6 +5,8 @@
 ##DataBase
 wikiData/
 
+.DS_Store*
+
 ### Node ###
 # Logs
 logs

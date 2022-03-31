@@ -9,7 +9,7 @@ services:
     volumes:
       - ./src:/home/node/app/src
       - ./nodemon.json:/home/node/app/nodemon.json
-    container_name: proespecies-wiki
+    container_name: eu-pescador-wiki
     expose:
       - '4002'
     ports:
@@ -19,9 +19,10 @@ services:
     container_name: "postgresDbWiki"
     image: "postgres:latest"
     ports: 
-      - "5433:5434"
+      - "5433:5433"
     volumes:
-      - db_persdata:/var/lib/
+      - db_persdata:/var/lib/db
+    command: postgres -c port=5433
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: admin

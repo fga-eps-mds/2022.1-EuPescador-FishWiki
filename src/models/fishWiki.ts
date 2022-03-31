@@ -26,11 +26,11 @@ export class FishWiki {
   @Column({nullable: true})
   habitat?: string;
 
-  @Column({nullable: true})
-  maxSize?: number;
+  @Column({nullable: true, type: 'real'})
+  maxSize?: string;
 
-  @Column({nullable: true})
-  maxWeight?: number;
+  @Column({nullable: true, type: 'real'})
+  maxWeight?: string;
 
   @Column({nullable: true})
   isEndemicInfo?: string;
@@ -60,6 +60,6 @@ export class FishWiki {
   funFact?: string;
 
   @Column({nullable: true})
-  photos?: string;
+  photo?: string;
 }
 

@@ -1,35 +1,6 @@
-import {FishWiki} from '../../models/fishWiki';
-import { connection } from '../../../src/config/database';
-
-const excelToJson = require('convert-excel-to-json');
-// const request = require('request');
-
-interface IFish {
-  largeGroup: string;
-  group: string;
-  commonName: string;
-  scientificName: string;
-  family: string;
-  food: string;
-  habitat: string;
-  maxSize: number;
-  maxWeight: number;
-  isEndemicInfo: string;
-  isEndemic: boolean;
-  isThreatenedInfo: string;
-  isThreatened: boolean;
-  hasSpawningSeasonInfo: string;
-  hasSpawningSeason: boolean;
-  wasIntroducedInfo: string;
-  wasIntroduced: boolean;
-  funFact: string;
-  photo: string;
-}
-interface ISheet {
-  Plan1: object[];
-  Plan2: IFish[];
-  Plan3: object[];
-}
+import { connection } from '../../config/database';
+import excelToJson from 'convert-excel-to-json';
+import { FishWiki } from '../../models/fishWiki';
 
 const fishLogSeed = async () => {
   const columnToKey = {
@@ -51,48 +22,48 @@ const fishLogSeed = async () => {
   };
 
   try {
-    const result: ISheet = await excelToJson({
-      sourceFile: 'src/utils/seed/planilha-dados.xlsx',
+    const result = excelToJson({
+      sourceFile: `${__dirname}/planilha-dados.xlsx`,
       header: {
         rows: 1,
       },
       columnToKey,
     });
-    for (let i = 0; i < result.Plan2.length; i += 1) {
-      const fish = {
-        largeGroup: result.Plan2[i].largeGroup,
-        group: result.Plan2[i].group,
-        commonName: result.Plan2[i].commonName,
-        scientificName: result.Plan2[i].scientificName,
-        family: result.Plan2[i].family,
-        food: result.Plan2[i].food,
-        habitat: result.Plan2[i].habitat,
-        maxSize: result.Plan2[i].maxSize,
-        maxWeight: result.Plan2[i].maxWeight,
-        isEndemicInfo: result.Plan2[i].isEndemicInfo,
-        isEndemic: !!(
-          result.Plan2[i].isEndemicInfo !== undefined &&
-          result.Plan2[i].isEndemicInfo.toLowerCase().includes('sim')
-        ),
-        isThreatenedInfo: result.Plan2[i].isThreatenedInfo,
-        isThreatened: !!(
-          result.Plan2[i].isThreatenedInfo !== undefined &&
-          result.Plan2[i].isThreatenedInfo.toLowerCase().includes('sim')
-        ),
-        hasSpawningSeasonInfo: result.Plan2[i].hasSpawningSeasonInfo,
-        hasSpawningSeason: !!(
-          result.Plan2[i].hasSpawningSeasonInfo !== undefined &&
-          result.Plan2[i].hasSpawningSeasonInfo.toLowerCase().includes('sim')
-        ),
-        wasIntroducedInfo: result.Plan2[i].wasIntroducedInfo,
-        wasIntroduced: !!(
-          result.Plan2[i].wasIntroducedInfo !== undefined &&
-          result.Plan2[i].wasIntroducedInfo.toLowerCase().includes('sim')
-        ),
-        funFact: result.Plan2[i].funFact,
-        photo: result.Plan2[i].photo,
-      };
-      // eslint-disable-next-line no-await-in-loop
+
+    for await (const fishInfo of result.Plan2) {
+      const fish = new FishWiki();
+      fish.largeGroup = fishInfo.largeGroup;
+      fish.group = fishInfo.group;
+      fish.commonName = fishInfo.commonName;
+      fish.scientificName =  fishInfo.scientificName;
+      fish.family =  fishInfo.family;
+      fish.food =  fishInfo.food;
+      fish.habitat =  fishInfo.habitat;
+      fish.maxSize =  fishInfo.maxSize;
+      fish.maxWeight =  fishInfo.maxWeight;
+      fish.isEndemicInfo =  fishInfo.isEndemicInfo;
+      fish.isEndemic =  !!(
+        fishInfo.isEndemicInfo !== undefined &&
+        fishInfo.isEndemicInfo.toLowerCase().includes('sim')
+      );
+      fish.isThreatenedInfo =  fishInfo.isThreatenedInfo;
+      fish.isThreatened =  !!(
+        fishInfo.isThreatenedInfo !== undefined &&
+        fishInfo.isThreatenedInfo.toLowerCase().includes('sim')
+      );
+      fish.hasSpawningSeasonInfo =  fishInfo.hasSpawningSeasonInfo;
+      fish.hasSpawningSeason =  !!(
+        fishInfo.hasSpawningSeasonInfo !== undefined &&
+        fishInfo.hasSpawningSeasonInfo.toLowerCase().includes('sim')
+      );
+      fish.wasIntroducedInfo =  fishInfo.wasIntroducedInfo;
+      fish.wasIntroduced =  !!(
+        fishInfo.wasIntroducedInfo !== undefined &&
+        fishInfo.wasIntroducedInfo.toLowerCase().includes('sim')
+      );
+      fish.funFact =  fishInfo.funFact;
+      fish.photo =  fishInfo.photo;
+
       const fishWikiRepository = connection.getRepository(FishWiki); 
       await fishWikiRepository.save(fish);
     }

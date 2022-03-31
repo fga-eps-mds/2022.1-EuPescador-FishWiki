@@ -23,6 +23,7 @@
   "devDependencies": {
     "@babel/preset-typescript": "^7.15.0",
     "@types/bcryptjs": "^2.4.2",
+    "@types/convert-excel-to-json": "^1.7.1",
     "@types/express": "^4.17.13",
     "@types/jest": "^27.0.1",
     "@types/node": "^17.0.21",
