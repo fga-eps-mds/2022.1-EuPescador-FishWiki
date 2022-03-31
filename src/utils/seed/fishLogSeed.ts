@@ -1,4 +1,5 @@
-import FishWiki from '../../models/fishWiki';
+import {FishWiki} from '../../models/fishWiki';
+import { connection } from '../../../src/config/database';
 
 const excelToJson = require('convert-excel-to-json');
 // const request = require('request');
@@ -92,7 +93,8 @@ const fishLogSeed = async () => {
         photo: result.Plan2[i].photo,
       };
       // eslint-disable-next-line no-await-in-loop
-      await FishWiki.create(fish);
+      const fishWikiRepository = connection.getRepository(FishWiki); 
+      await fishWikiRepository.save(fish);
     }
     console.log('Planilha populada com sucesso!');
   } catch (error) {
