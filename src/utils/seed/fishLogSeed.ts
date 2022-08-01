@@ -1,5 +1,6 @@
-import { connection } from '../../config/database';
+/* eslint-disable no-restricted-syntax */
 import excelToJson from 'convert-excel-to-json';
+import { connection } from '../../config/database';
 import { FishWiki } from '../../models/fishWiki';
 
 const fishLogSeed = async () => {
@@ -24,12 +25,12 @@ const fishLogSeed = async () => {
   try {
     const fishWikiRepository = connection.getRepository(FishWiki);
 
-    const fishes = await fishWikiRepository.find({})
+    const fishes = await fishWikiRepository.find({});
 
-    if(fishes && fishes.length > 0){
+    if (fishes && fishes.length > 0) {
       return;
     }
-    
+
     const result = excelToJson({
       sourceFile: `${__dirname}/planilha-dados.xlsx`,
       header: {
@@ -42,36 +43,35 @@ const fishLogSeed = async () => {
       fish.largeGroup = fishInfo.largeGroup;
       fish.group = fishInfo.group;
       fish.commonName = fishInfo.commonName;
-      fish.scientificName =  fishInfo.scientificName;
-      fish.family =  fishInfo.family;
-      fish.food =  fishInfo.food;
-      fish.habitat =  fishInfo.habitat;
-      fish.maxSize =  fishInfo.maxSize;
-      fish.maxWeight =  fishInfo.maxWeight;
-      fish.isEndemicInfo =  fishInfo.isEndemicInfo;
-      fish.isEndemic =  !!(
+      fish.scientificName = fishInfo.scientificName;
+      fish.family = fishInfo.family;
+      fish.food = fishInfo.food;
+      fish.habitat = fishInfo.habitat;
+      fish.maxSize = fishInfo.maxSize;
+      fish.maxWeight = fishInfo.maxWeight;
+      fish.isEndemicInfo = fishInfo.isEndemicInfo;
+      fish.isEndemic = !!(
         fishInfo.isEndemicInfo !== undefined &&
         fishInfo.isEndemicInfo.toLowerCase().includes('sim')
       );
-      fish.isThreatenedInfo =  fishInfo.isThreatenedInfo;
-      fish.isThreatened =  !!(
+      fish.isThreatenedInfo = fishInfo.isThreatenedInfo;
+      fish.isThreatened = !!(
         fishInfo.isThreatenedInfo !== undefined &&
         fishInfo.isThreatenedInfo.toLowerCase().includes('sim')
       );
-      fish.hasSpawningSeasonInfo =  fishInfo.hasSpawningSeasonInfo;
-      fish.hasSpawningSeason =  !!(
+      fish.hasSpawningSeasonInfo = fishInfo.hasSpawningSeasonInfo;
+      fish.hasSpawningSeason = !!(
         fishInfo.hasSpawningSeasonInfo !== undefined &&
         fishInfo.hasSpawningSeasonInfo.toLowerCase().includes('sim')
       );
-      fish.wasIntroducedInfo =  fishInfo.wasIntroducedInfo;
-      fish.wasIntroduced =  !!(
+      fish.wasIntroducedInfo = fishInfo.wasIntroducedInfo;
+      fish.wasIntroduced = !!(
         fishInfo.wasIntroducedInfo !== undefined &&
         fishInfo.wasIntroducedInfo.toLowerCase().includes('sim')
       );
-      fish.funFact =  fishInfo.funFact;
-      fish.photo =  fishInfo.photo;
+      fish.funFact = fishInfo.funFact;
+      fish.photo = fishInfo.photo;
 
-      
       await fishWikiRepository.save(fish);
     }
     console.log('Planilha populada com sucesso!');

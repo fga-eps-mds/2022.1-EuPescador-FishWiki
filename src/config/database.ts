@@ -1,6 +1,7 @@
+/* eslint-disable import/prefer-default-export */
 import 'reflect-metadata';
-import { FishWiki } from '../models/fishWiki';
 import { DataSource } from 'typeorm';
+import { FishWiki } from '../models/fishWiki';
 
 export const connection = new DataSource({
   type: 'postgres',
